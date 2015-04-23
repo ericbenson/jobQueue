@@ -1,12 +1,13 @@
-module.exports = function(){
+module.exports = function(start){
 
   var _queue = [];
-  var head = 0; 
-  var tail = 0;
+  var head = start; 
+  var tail = start;
 
   var methods = {
     enqueue: function(url){
-      var oldHead = head; 
+      var oldHead = head;
+      console.log('current head',head); 
       _queue[head++]=url;
       return oldHead;
     }, 

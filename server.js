@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var client = require('./server/mongo.js');
-var queue = require('./server/queue.js')();
+var queue = require('./server/queue.js');
 var checkStatus = require('./server/checkStatus.js');
 var worker = require('./server/worker.js');
 
@@ -18,27 +18,22 @@ client.open(function(err, p_client) {
   // Create a collection, if it doesn't exist already:
   client.createCollection("websites", function(err, collection) {
     console.log("Created collection");
+    collection.count(function(err, count) {
+      queue = queue(count);
 
-		app.post('/enterURL', function(req, res){
-			console.log(req.body);
-			id = queue.enqueue(req.body);
-			res.sendStatus(id);
-		});
+      app.post('/enterURL', function(req, res){
+        console.log(req.body);
+        id = queue.enqueue(req.body.url);
+        res.send(''+id);
+      });
 
-		app.post('/checkID', function(req, res){
-      console.log(req.body.id);
-      checkStatus(collection, Number(req.body.id), function(status){
-        console.log(status);
-        if(status){
-          res.send(status);
-        } else {
-          console.log('testing');
-    			res.sendStatus(200);
-        }       
+      app.post('/checkID', function(req, res){
+        console.log(req.body.id);
+        checkStatus(collection, Number(req.body.id), function(status){
+          res.send(status);     
+        });
       });
 		});
-
-
 
 		app.use(express.static(__dirname +'/client'));
 

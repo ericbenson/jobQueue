@@ -4,15 +4,17 @@
 	  <link rel="stylesheet" type="text/css" href="styles.css" />
 	</head>
 	<body>
-	  <div class='enterURL'></div>
-	  <form action='enterURL' method="POST">
+	  <div class='enterURL'>Enter URL to save it to DB</div>
+	  <form class='URLForm'>
 	    <input type="input" name="url"></input>
 	  </form>
 
-    <div class='checkID'></div>
-    <form action='checkID' method="POST">
+    <div class='checkID'>Enter ID to check on the status of your request</div>
+    <form class='IDForm'>
       <input type="input" name="id"></input>
     </form>
+
+    <div class='status'></div>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="app.js"></script>
