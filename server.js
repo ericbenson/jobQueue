@@ -17,19 +17,16 @@ client.open(function(err, p_client) {
 
   // Create a collection, if it doesn't exist already:
   client.createCollection("websites", function(err, collection) {
-    console.log("Created collection");
     collection.count(function(err, count) {
       queue = queue(count);
 
       app.post('/enterURL', function(req, res){
-        console.log(req.body);
         id = queue.enqueue(req.body.url);
         res.send(''+id);
       });
 
       app.post('/checkID', function(req, res){
-        console.log(req.body.id);
-        checkStatus(collection, Number(req.body.id), function(status){
+        checkStatus(collection, Number(req.body.id), queue, function(status){
           res.send(status);     
         });
       });
@@ -42,9 +39,10 @@ client.open(function(err, p_client) {
 		app.listen(port, function(){
 
 			console.log('listening on port 8000');
+        
+        //run worker every 5 seconds to clear the queue
         setInterval(function(){
           for(var i=0; i<queue.size(); i++){
-            console.log('working');
             worker(collection, queue);
           }
         },5000);

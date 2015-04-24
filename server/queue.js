@@ -7,7 +7,6 @@ module.exports = function(start){
   var methods = {
     enqueue: function(url){
       var oldHead = head;
-      console.log('current head',head); 
       _queue[head++]=url;
       return oldHead;
     }, 
@@ -18,6 +17,9 @@ module.exports = function(start){
     }, 
     size: function(){
       return head - tail;
+    }, 
+    getHead: function(){
+      return head;
     }
   }  
 

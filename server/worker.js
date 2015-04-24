@@ -4,7 +4,6 @@ module.exports = function(collection, queue){
 
   var url = queue.dequeue();
 
-  console.log('the working url',url.url);
   if(url.url.slice(0,7)!=='http://'){
     url.url = 'http://'+url.url;
   }
